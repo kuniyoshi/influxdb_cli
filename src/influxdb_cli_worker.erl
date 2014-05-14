@@ -83,9 +83,7 @@ gen_url(State, {q, Statement}) ->
     Url.
 
 query_http(Url) ->
-    ?debugVal(Url),
     {ok, {_StatusLine, _Headers, Body}} = httpc:request(Url),
-    ?debugVal(Body),
     jiffy:decode(Body).
 
 call_get_options(State) ->
@@ -109,11 +107,8 @@ call_q(Statement, State) ->
 
 call_update(Json, State) ->
     Url = gen_base_url(State),
-    ?debugVal(Url),
-    ?debugVal(Json),
-    {ok, {_StatusLine, _Headers, Body}} = httpc:request(post,
-                                                        {Url, [], "application/json", Json},
-                                                        [],
-                                                        []),
-    ?debugVal(Body),
+    {ok, {_StatusLine, _Headers, _Body}} = httpc:request(post,
+                                                         {Url, [], "application/json", Json},
+                                                         [],
+                                                         []),
     {reply, ok, State}.
